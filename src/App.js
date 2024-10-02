@@ -6,6 +6,7 @@ import Header from "./components/Layout/Header";
 import ProductDetails from "./components/ProductDetails";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import Login from "./components/Login";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -27,6 +28,9 @@ function App() {
           </Route>
           <Route path="/login">
             <Login />
+          </Route>
+          <Route path="*">
+            <NotFound />
           </Route>
         </Switch>
       </main>
