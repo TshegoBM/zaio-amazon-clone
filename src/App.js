@@ -7,11 +7,15 @@ import ProductDetails from "./components/ProductDetails";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
+import AuthContext from "./context/authContext";
 
 function App() {
+
+
+ 
   return (
-    <div>
-      <Header />
+    <>
+      <Header/>
       <main>
         <Switch>
           <Route path="/" exact>
@@ -27,14 +31,14 @@ function App() {
             <ProductDetails />
           </Route>
           <Route path="/login">
-            <Login />
+            <Login/>
           </Route>
           <Route path="*">
             <NotFound />
           </Route>
         </Switch>
       </main>
-    </div>
+      </>
   );
 }
 

@@ -1,40 +1,66 @@
-import React, { useState, useRef, useEffect, useReducer } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./Login.css";
+import AuthContext from "../context/authContext";
+import ShoppingContext from "../context/shopping/shoppingContext";
+import shoppingContext from "../context/shopping/shoppingContext";
+
+const reducer = (state, action) => {
+    const {basket, user} = shoppingContext;
+  if (action.type === "EMAIL_INPUT") {
+    return { ...state, emailValue: action.payload };
+  }
+
+  if (action.type === "PASS_INPUT") {
+    return { ...state, passwordValue: action.payload };
+  }
+
+  return {emailValue: "", passwordValue: ""};
+};
 
 const Login = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const emailRef = useRef();
-  const passwordRef = useRef();
+    const ctx = useContext(AuthContext);
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  // useReducer for managing form state
+  const [state, dispatch] = useReducer(reducer, {
+    emailValue: "",
+    passwordValue: "",
+  });
+
+  const { emailValue: email, passwordValue: password } = state;
 
   useEffect(() => {
-    const user = localStorage.getItem("isLoggedIn")
+    const identifier = setTimeout(() => {
+      console.log("CHECKING FORM VALIDITY");
+      setFormIsValid(email.includes("@") && password.trim().length > 6);
+    }, 500);
 
-    
-    if (user) {
-        setIsLoggedIn(true);
-    }
-  }, []);
+    return () => {
+        console.log("CLEANUP HERE")
+      clearTimeout(identifier); // Cleanup on each render
+    };
+  }, [email, password]);
 
-
-  const signIn = (e) => {
-    e.preventDefault(); //Prevents refreshing when sign in button is clicked
-    const enteredEmail = emailRef.current.value;
-    const enteredPassword = passwordRef.current.value;
-    console.log("Email: ", enteredEmail + " Password: ", enteredPassword);
-    localStorage.setItem('isLoggedIn', '1') 
-    setIsLoggedIn(true);
+  // Handlers for email and password changes
+  const emailChangeHandler = (e) => {
+    dispatch({ type: "EMAIL_INPUT", payload: e.target.value });
   };
-  const signOut = ()=> {
-    setIsLoggedIn(false)
-    localStorage.removeItem("isLoggedIn");
-  }
+
+  const passwordChangeHandler = (e) => {
+    dispatch({ type: "PASS_INPUT", payload: e.target.value });
+  };
+
+  // Sign in handler
+  const signIn = (e) => {
+    e.preventDefault();
+    console.log("Entered Email: ", state.emailValue);
+    console.log("Entered Password: ", state.passwordValue);
+    ctx.onLogin(state.emailValue, state.passwordValue)
+  };
+
   return (
     <div className="login">
-        {isLoggedIn && (
-            <p>You are logged in <button onClick={signOut}>Sign out</button></p>
-        )}
-        
       <Link to="/">
         <img
           src="http://my.linefor.com/wp-content/uploads/2015/08/amazon.png"
@@ -42,23 +68,31 @@ const Login = () => {
           className="login_logo"
         />
       </Link>
+
       <div className="login_container">
         <h1>Sign-in</h1>
         <form>
           <h5>E-mail</h5>
           <input
             type="text"
-            ref={emailRef}
+            value={email}
+            onChange={emailChangeHandler}
           />
           <h5>Password</h5>
           <input
             type="password"
-            ref={passwordRef}
+            value={password}
+            onChange={passwordChangeHandler}
           />
-          <button type="submit" className="login_signInButton" onClick={signIn}>
+          <button
+            type="submit"
+            className="login_signInButton"
+            onClick={signIn}
+          >
             Sign In
           </button>
         </form>
+
         <p>
           By signing-in you agree to the AMAZON FAKE CLONE conditions of Use &
           Sale. Please see our Privacy Notice, our Cookies Notice and our
