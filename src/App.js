@@ -7,12 +7,25 @@ import ProductDetails from "./components/ProductDetails";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-import AuthContext from "./context/authContext";
+import ShoppingContext from "./context/shopping/shoppingContext";
+import { useContext, useEffect } from "react";
+import { auth } from "./firebase";
 
-function App() {
+const App= ()=> {
+  const shoppingContext = useContext(ShoppingContext);
+  const { setUser } = shoppingContext;
+  useEffect(()=> {
+    auth.onAuthStateChanged((authUser) => {
+      console.log("User is  ->", authUser);
 
+      if(authUser) {
+        setUser(authUser)
+      } else {
+        setUser(null)
+      }
+    })
+  }, [])
 
- 
   return (
     <>
       <Header/>

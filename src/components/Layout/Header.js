@@ -11,10 +11,10 @@ const Header = () => {
   const { basket, user } = shoppingContext;
 
   const handleAuthentication = () => {
-if (user) {
-auth.signOut();
-}
-  }
+    if (user) {
+      auth.signOut();
+    }
+  };
 
   return (
     <header className="header">
@@ -31,10 +31,14 @@ auth.signOut();
         <SearchIcon className="search_icon" />
       </div>
       <div className="header_nav">
-        <Link to= {!user && '/login'}>
+        <Link to={!user && "/login"}>
           <div className="header_option" onClick={handleAuthentication}>
-            <span className="header_optionOne">Hello, {!user ? 'Guest' : user.email}</span>
-            <span className="header_optionTwo">{user? 'Sign Out' : 'Sign In'}</span>
+            <span className="header_optionOne">
+              Hello, {!user ? "Guest" : user.email}
+            </span>
+            <span className="header_optionTwo">
+              {user ? "Sign Out" : "Sign In"}
+            </span>
           </div>
         </Link>
 
