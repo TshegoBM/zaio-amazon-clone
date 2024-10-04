@@ -25,13 +25,13 @@ const Product = ({ id, image, title, rating, price }) => {
             ))}
         </div>
         <p className="product_price">
-          <medium>R</medium>
-          <strong>{price}</strong>
+          {/* <small>R</small> */}
+          <strong>{new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(price)}</strong>
         </p>
+        </div>
         <button className="product_button" onClick={addToBasketHandler}>
           Add to Basket
         </button>
-      </div>
     </div>
   );
 };
