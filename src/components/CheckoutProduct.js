@@ -23,8 +23,8 @@ const CheckoutProduct = ({ id, image, title, rating, price, hideButton }) => {
           ))}
       </div>
       <p className="checkout_product_price">
-        {/* <small>R</small> */}
-        <strong>{new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(price)}</strong>
+        <small>$</small>
+        <strong>{(price)}</strong>
       </p>
       {!hideButton && <button onClick={removeFromBasketHandler}>Remove From Basket</button>}
     </div>

@@ -24,14 +24,15 @@ const Product = ({ id, image, title, rating, price }) => {
               <p key={i}>⭐</p>
             ))}
         </div>
-        <p className="product_price">
-          {/* <small>R</small> */}
-          <strong>{new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(price)}</strong>
+        <p className="product_price" >
+          <small>$</small>
+          <strong>{(price)}</strong>
         </p>
-        </div>
+        
         <button className="product_button" onClick={addToBasketHandler}>
           Add to Basket
         </button>
+        </div>
     </div>
   );
 };

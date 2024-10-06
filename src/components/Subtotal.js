@@ -26,7 +26,7 @@ const Subtotal = () => {
         value={getBasketTotal(basket)}
         displayType={"text"}
         thousandSeparator={true} 
-        prefix={"R"}
+        prefix={"$"}
       />
       <button onClick={e =>history.push('/payment')}>Proceed to Checkout</button>
     </div>
